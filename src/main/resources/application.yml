@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://trainingdbnttdata:zMaT0bwJ86xps4wN@proyectobootcamp.jyiov.mongodb.net/credit
+  application:
+    name: ms-credit-service
+  cloud:
+    compatibility-verifier:
+      enabled: false
+server:
+  port: 9092
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8082/eureka/
+    enabled: false
+  instance:
+    hostname: localhost
+
+bp:
+  service:
+    url: 'http://localhost:9090/BusinessPartnerService/BusinessPartner'
