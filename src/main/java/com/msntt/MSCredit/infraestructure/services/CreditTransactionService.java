@@ -121,7 +121,13 @@ public class CreditTransactionService implements ITransactionService {
                 .flatMap(saveconsumptioncreditcard);
     }
 
-
+    public Mono<Long> Expireddebit(String Businesspartner)
+    {
+        Mono<Long> QtyCredit = crrepository.countBycodebusinesspartnerAndExpireddebtGreaterThan(Businesspartner, BigDecimal.ZERO);
+        Mono<Long> QtyCreditCard = crepository.countBycodeBusinessPartnerAndExpireddebtGreaterThan(Businesspartner, BigDecimal.ZERO);
+        Mono<Long> Result = Mono.zip(QtyCredit, QtyCreditCard,(a, b) -> a + b);
+        return Result;
+    }
 
     //Methods
     private final BiPredicate<CreditCard, CreditcardConsumptionDTO> isValidConsumptionCreditCard = (a, b) ->
@@ -159,7 +165,7 @@ public class CreditTransactionService implements ITransactionService {
         _a = a.getConsumedline();
         _b = b.getPayment();
         responsen = _a.compareTo(_b);
-        return responsen >= 0;
+        return  responsen >= 0;
     };
 
     public Function<CreditConsumptionDTO, Mono<Credit>> updateconsumptioncredit = consumption -> {
@@ -204,11 +210,6 @@ public class CreditTransactionService implements ITransactionService {
     private final Function<CreateCreditDTO, Mono<CreateCreditDTO>> existsBusinessPartner = credit ->
             businessPartnerClient.findById(credit.getCodeBusinessPartner())
                     .flatMap(r -> Mono.just(credit));
-
-
-
-
-
 
     private final Function<CreditcardConsumptionDTO, Mono<CreditTransaction>> saveconsumptioncreditcard = consumption -> {
 

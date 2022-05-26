@@ -121,7 +121,7 @@ public class CreditService implements ICreditService {
         Long _a= 0L;
         Integer responsen;
 
-        responsen = _a.compareTo(a);
+        responsen = a.compareTo(a);
         return responsen.equals(0);
     };
     private final Predicate<CreateCreditDTO> isPeople= (a) ->

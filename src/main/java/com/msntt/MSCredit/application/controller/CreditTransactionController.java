@@ -83,15 +83,7 @@ public class CreditTransactionController {
                             .contentType(MediaType.APPLICATION_JSON).body(response);
                 })
 
-        )
-
-
-
-
-
-
-
-                ;
+        );
     }
     @PostMapping("/ConsumptionCreditCards")
     public Mono<ResponseEntity<Map<String, Object>>> ConsumptionCreditCards(@Valid @RequestBody Mono<CreditcardConsumptionDTO> request) {
@@ -119,5 +111,9 @@ public class CreditTransactionController {
     @GetMapping("/Consumptions/CreditCard/{id}")
     public Flux<CreditTransaction> Consumptions(@PathVariable String id) {
         return transactionservice.findBycardnumberAndcreditGreaterThan(id);
+    }
+    @GetMapping("/Expireddebit/{id}")
+    public Mono<Long> Expireddebit(@PathVariable String id) {
+        return transactionservice.Expireddebit(id);
     }
 }
