@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.msntt.MSCredit.domain.model;
+package com.msntt.MSCredit.domain.dto;
 import com.msntt.MSCredit.domain.constant.TransactionType;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -18,25 +18,12 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Document
-public class CreditTransaction {
-	
-	@Id
-    private String transactionId;
-    @NotNull
+public class CreditTransactionDTO {
+
     private TransactionType transactiontype;
-    private String fromaccount;
-    private String toaccount;
     private Date createDate;
-    @NotNull
-    @Digits(integer =20, fraction=6)
-    private BigDecimal amount;
     @Digits(integer =20, fraction=6)
     private BigDecimal debit;
     @Digits(integer =20, fraction=6)
     private BigDecimal credit;
-    private String creditcard;
-    private String creditid;
-    @NotNull
-    private String codebusinesspartner;
-	
 }

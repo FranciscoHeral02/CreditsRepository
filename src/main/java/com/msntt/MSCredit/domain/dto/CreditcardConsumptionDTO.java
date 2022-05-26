@@ -15,6 +15,8 @@ public class CreditcardConsumptionDTO {
     @NotBlank
     private String creditcard;
     @NotNull
+    private String codebusinesspartner;
+    @NotNull
     @Digits(integer =20, fraction=6)
     private BigDecimal consumption;
 

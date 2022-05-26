@@ -5,6 +5,7 @@ import com.msntt.MSCredit.application.exception.EntityNotExistsException;
 import com.msntt.MSCredit.application.helpers.CardGeneratorValues;
 import com.msntt.MSCredit.domain.dto.BusinessPartnerDTO;
 import com.msntt.MSCredit.domain.dto.CreateCreditCardDTO;
+import com.msntt.MSCredit.domain.dto.CreditCardDTO;
 import com.msntt.MSCredit.domain.dto.CreditcardConsumptionDTO;
 import com.msntt.MSCredit.domain.model.CreditCard;
 import com.msntt.MSCredit.domain.repository.CreditCardRepository;
@@ -63,6 +64,17 @@ public class CreditCardService implements ICreditCardService {
     public Mono<Long> countbycreditcard(String id) {
         return repository.countBycodeBusinessPartner(id);
     }
+
+
+    public Flux<CreditCardDTO> availableamountcreditcard(String id) {
+        return repository.findBycodeBusinessPartner(id);
+    }
+
+
+
+    public Mono<Long> countbycreditcardAndexpireddebit(String id) {
+        return repository.countBycodeBusinessPartnerAndExpireddebtGreaterThan(id, BigDecimal.ZERO);
+    }
     public Mono<CreditCard> updateconsumption(String id, BigDecimal balance) {
 
         return repository.findById(id).flatMap(r -> {
@@ -100,12 +112,14 @@ public class CreditCardService implements ICreditCardService {
                 .cardNumber(CardGeneratorValues.CardNumberGenerate())
                 .approvedline(creditCardDto.getLimit())
                 .availableline(creditCardDto.getLimit())
-                .consumedline(BigDecimal.valueOf(0.00))
+                .consumedline(BigDecimal.ZERO)
                 .valid(true)
                 .expiringDate(CardGeneratorValues.CardExpiringDateGenerate())
                 .codeBusinessPartner(creditCardDto.getCodeBusinessPartner())
                 .cvv(CardGeneratorValues.CardCVVGenerate())
+                .expireddebt(BigDecimal.ZERO)
                 .createdate(new Date()).build();
+
 
         return repository.save(a);
 
