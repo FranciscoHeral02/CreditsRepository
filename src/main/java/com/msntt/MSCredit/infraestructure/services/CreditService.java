@@ -98,10 +98,11 @@ public class CreditService implements ICreditService {
         a = Credit.builder()
 
                 .availableline(creditDto.getLimit())
-                .consumedline(BigDecimal.valueOf(0.00))
-                .paymentcredit(BigDecimal.valueOf(0.00))
+                .consumedline(BigDecimal.ZERO)
+                .paymentcredit(BigDecimal.ZERO)
                 .approvedline(creditDto.getLimit())
                 .codebusinesspartner(creditDto.getCodeBusinessPartner())
+                .expireddebt(BigDecimal.ZERO)
                 .createdate(new Date()).build();
 
         return repository.save(a);

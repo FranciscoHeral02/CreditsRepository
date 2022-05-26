@@ -4,6 +4,7 @@ import com.msntt.MSCredit.domain.dto.CreditCardPaymentDTO;
 import com.msntt.MSCredit.domain.dto.CreditConsumptionDTO;
 import com.msntt.MSCredit.domain.dto.CreditPaymentDTO;
 import com.msntt.MSCredit.domain.dto.CreditcardConsumptionDTO;
+import com.msntt.MSCredit.domain.model.CreditCard;
 import com.msntt.MSCredit.domain.model.CreditTransaction;
 import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Flux;
@@ -23,6 +24,7 @@ public interface ITransactionService {
 	
 	Flux<CreditTransaction> saveAll(List<CreditTransaction> a);
 
+	Flux<CreditTransaction> findBycardnumberAndcreditGreaterThan(String cardnumber);
 	public Mono<CreditTransaction> doCreditPayment (CreditPaymentDTO dto);
 	public Mono<CreditTransaction> doCreditConsumption (CreditConsumptionDTO dto);
 	public Mono<CreditTransaction> doCreditCardPayment (CreditCardPaymentDTO dto);

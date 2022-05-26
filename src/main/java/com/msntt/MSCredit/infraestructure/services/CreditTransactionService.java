@@ -1,6 +1,5 @@
 package com.msntt.MSCredit.infraestructure.services;
 
-import com.msntt.MSCredit.application.exception.CreditNotCreatedException;
 import com.msntt.MSCredit.application.exception.EntityNotExistsException;
 import com.msntt.MSCredit.domain.constant.TransactionType;
 import com.msntt.MSCredit.domain.dto.*;
@@ -11,6 +10,7 @@ import com.msntt.MSCredit.domain.repository.CreditCardRepository;
 import com.msntt.MSCredit.domain.repository.CreditRepository;
 import com.msntt.MSCredit.domain.repository.CreditTransactionRepository;
 import com.msntt.MSCredit.infraestructure.interfaces.ITransactionService;
+import com.msntt.MSCredit.infraestructure.restclient.IBusinessPartnerClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,8 @@ public class CreditTransactionService implements ITransactionService {
     CreditCardRepository crepository;
     @Autowired
     CreditRepository crrepository;
-
+    @Autowired
+    private IBusinessPartnerClient businessPartnerClient;
     //Crud
     @Override
     public Flux<CreditTransaction> findAll() {
@@ -64,6 +65,11 @@ public class CreditTransactionService implements ITransactionService {
     public Flux<CreditTransaction> saveAll(List<CreditTransaction> a) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public Flux<CreditTransaction> findBycardnumberAndcreditGreaterThan(String cardnumber) {
+        return trepository.findBycreditcardAndDebitGreaterThan(cardnumber ,BigDecimal.ZERO);
     }
 
     //Transaction
@@ -114,6 +120,8 @@ public class CreditTransactionService implements ITransactionService {
                 .then(Mono.just(dto))
                 .flatMap(saveconsumptioncreditcard);
     }
+
+
 
     //Methods
     private final BiPredicate<CreditCard, CreditcardConsumptionDTO> isValidConsumptionCreditCard = (a, b) ->
@@ -193,7 +201,9 @@ public class CreditTransactionService implements ITransactionService {
             return crepository.save(r);
     });
     };
-
+    private final Function<CreateCreditDTO, Mono<CreateCreditDTO>> existsBusinessPartner = credit ->
+            businessPartnerClient.findById(credit.getCodeBusinessPartner())
+                    .flatMap(r -> Mono.just(credit));
 
 
 

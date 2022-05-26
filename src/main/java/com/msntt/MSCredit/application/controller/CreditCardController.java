@@ -1,6 +1,7 @@
 package com.msntt.MSCredit.application.controller;
 
 import com.msntt.MSCredit.domain.dto.CreateCreditCardDTO;
+import com.msntt.MSCredit.domain.dto.CreditCardDTO;
 import com.msntt.MSCredit.domain.dto.CreditcardConsumptionDTO;
 import com.msntt.MSCredit.domain.model.CreditCard;
 import com.msntt.MSCredit.infraestructure.services.CreditCardService;
@@ -61,6 +62,15 @@ public class CreditCardController {
     @GetMapping("/countByBusinessPartner/{id}")
     public Mono<Long> findByIdbp(@PathVariable String id) {
         return service.countbycreditcard(id);
+    }
+
+    @GetMapping("/Expireddebit/{id}")
+    public Mono<Long> Expireddebit(@PathVariable String id) {
+        return service.countbycreditcardAndexpireddebit(id);
+    }
+    @GetMapping("/Availableamount/{id}")
+    public Flux<CreditCardDTO> Availableamount(@PathVariable String id) {
+        return service.availableamountcreditcard(id);
     }
     @DeleteMapping("/{id}")
     public Mono<ResponseEntity<Map<String, Object>>> delete(@PathVariable String id) {
